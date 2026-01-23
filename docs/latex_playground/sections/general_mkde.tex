@@ -1,0 +1,22 @@
+\subsection{General Multivariate Kernel Density Estimators}
+% --- SLIDE 2: GENERAL FORMULA ---
+\begin{frame}{General Multivariate Estimator}
+    Let $\vect{x}$ be a $p$-dimensional random vector. The general estimator is defined as:
+
+    \begin{block}{General Multivariate KDE}
+        \begin{equation}
+            \hat{f}(\vect{x}) = \frac{1}{n |\vect{H}|} \sum_{i=1}^{n} K\left( \vect{H}^{-1} (\vect{x} - \vect{x}_i) \right)
+        \end{equation}
+    \end{block}
+
+    \vspace{1em}
+    \textbf{Components:}
+    \begin{itemize}
+        \item $\vect{H}$ ($p \times p$): \textbf{Bandwidth Matrix} (controls orientation and scaling).
+        \item $|\vect{H}|$: Determinant of $\vect{H}$ (normalizing constant).
+        \item $K$: Multivariate kernel function (usually symmetric).
+    \end{itemize}
+
+    \vspace{0.5em}
+    \small \textit{Note: Specifying a full matrix $\vect{H}$ is computationally expensive.}
+\end{frame}

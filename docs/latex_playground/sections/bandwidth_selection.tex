@@ -1,0 +1,24 @@
+\section{Bandwidth Selection}
+% --- SLIDE 4: BANDWIDTH SELECTION (ANIMATED) ---
+\begin{frame}{Bandwidth Selection (Scott's Rule)}
+    To minimize the error (AMISE), we select the bandwidth $h_j$ for each dimension:
+
+    \vspace{1em}
+    \begin{block}{Multivariate Scott's Rule}
+        \begin{equation}
+            h_j = \alert<2>{\hat{\sigma}_j} \left( \frac{4}{\alert<3>{n}(\alert<4>{p}+2)} \right)^{\frac{1}{\alert<4>{p}+4}}
+        \end{equation}
+    \end{block}
+
+    \vspace{1em}
+    \textbf{Interpretation:}
+    \begin{itemize}
+        \item<2-> \alert<2>{$\hat{\sigma}_j$}: The standard deviation (scale) of variable $j$.
+        \item<3-> \alert<3>{$n$}: Sample size. More data $\to$ smaller bandwidth (finer detail).
+        \item<4-> \alert<4>{$p$}: Number of dimensions.
+        \begin{itemize}
+            \item As $p \uparrow$, data becomes sparse.
+            \item We need \textbf{wider bandwidths} to cover the gaps.
+        \end{itemize}
+    \end{itemize}
+\end{frame}

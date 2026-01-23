@@ -1,0 +1,32 @@
+\subsection{Problem}
+
+% --- SLIDE 1: THE PROBLEM ---
+\begin{frame}{The Curse of Dimensionality}
+    \begin{columns}
+        % Left Column: Concepts
+        \begin{column}{0.5\textwidth}
+            \begin{alertblock}{The Challenge}
+                High-dimensional space ($p > 3$) is vastly different from univariate space. Data becomes incredibly \textbf{sparse}.
+            \end{alertblock}
+
+            \pause
+
+            \vspace{1em}
+            \textbf{Key Implications:}
+            \begin{itemize}
+                \item Points have very few near neighbors.
+                \item "Empty space" phenomenon: For $p=10$, $>50\%$ of mass lies in the extreme tails ($>1.6\sigma$).
+                \item Visualization is difficult without dimension reduction.
+            \end{itemize}
+        \end{column}
+
+        % Right Column: Visual Placeholder
+        \begin{column}{0.5\textwidth}
+            \centering
+            % TODO: Insert a plot showing 1D vs 2D vs 3D point density
+            % Suggestion: A 3D scatter plot showing points drifting apart
+            \includegraphics[width=0.9\linewidth]{example-image-a}
+            \captionof{figure}{Sparseness in High Dimensions}
+        \end{column}
+    \end{columns}
+\end{frame}

@@ -1,0 +1,17 @@
+% --- SLIDE 5: HANDLING CORRELATION (WHITENING) ---
+\begin{frame}{Handling Correlation: Whitening (Sphering)}
+    Product kernels fail when data is highly correlated (variables are not axis-aligned).
+
+    \textbf{Solution Strategy:}
+    \begin{enumerate}
+        \item \textbf{Transform:} Rotate data to eliminate correlation.
+        \[ \vect{Z}_i = \vect{\Lambda}^{-1/2} \vect{P}^T (\vect{x}_i - \bar{\vect{x}}) \]
+        \item \textbf{Estimate:} Apply Product KDE on transformed data $\vect{Z}$.
+        \item \textbf{Back-transform:} Map results back to original space.
+    \end{enumerate}
+
+    \vspace{0.5em}
+    \centering
+    % TODO: Insert Image: [Correlated Data] -> [Rotation] -> [Uncorrelated Data]
+    \includegraphics[width=0.8\linewidth, height=3cm]{example-image-c}
+\end{frame}

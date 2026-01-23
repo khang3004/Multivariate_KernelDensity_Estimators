@@ -1,0 +1,81 @@
+% Aspectratio 16:9 is the standard for modern projectors/monitors
+\documentclass[aspectratio=169, 11pt]{beamer}
+
+% Import your custom style
+\usepackage{hcmus_beamer}
+
+% Define image directory
+\graphicspath{ {./images/} }
+
+% --- PRESENTATION METADATA ---
+%\titlegraphic{
+%    \includegraphics[height=1.5cm]{hcmus_logo}
+%}
+\title[Multivariate Kernel Density Estimation]{Multivariate Kernel Density Estimation}
+
+\subtitle{Computational Statistics Course Project}
+
+% List all group members
+\author[Group 3]{
+    Khang Nguyen \and
+    Nhat Tien Nguyen \and
+    Phuc Loc Nguyen
+}
+
+\institute[HCMUS]{
+% Thêm [c] vào đây để ép logo và chữ căn giữa theo chiều dọc
+    \begin{columns}[c]
+        \begin{column}{0.3\textwidth}
+            Faculty of Mathematics \& Computer Science \\
+            \textbf{University of Science, VNU-HCM}
+        \end{column}
+
+        \begin{column}{0.2\textwidth}
+            \centering
+            \includegraphics[height=2cm]{logo_maths_informatics_faculty}
+        \end{column}
+        \begin{column}{0.25\textwidth}
+            \centering
+            \begin{itemize}
+                \item 25CO1035
+                \item 25C01036
+                \item 25C01024
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
+
+}
+
+\date{\today}
+
+% --- MAIN DOCUMENT ---
+\begin{document}
+
+    % 1. Title Slide
+    \begin{frame}
+        \titlepage
+    \end{frame}
+
+    % 2. Table of Contents
+    \begin{frame}{Outline}
+        \tableofcontents[hideallsubsections] % Cleaner look
+    \end{frame}
+
+    % 3. Modular Content
+    % Each member works on their own file in the 'sections' folder
+    \include{sections/introduction}  % Introduction & Motivation
+    \include{sections/problem}
+    \include{sections/general_mkde}
+    \include{sections/product_kernels}
+    \include{sections/bandwidth_selection}
+    \include{sections/correlation_handle_whitening}
+    % 4. Q&A Slide
+    \begin{frame}[plain] % 'plain' removes header/footer
+        \centering
+        \Huge \textcolor{darkred}{Thank You vi da den!}\\
+        \vspace{1em}
+        \Large Q \& A
+    \end{frame}
+
+\end{document}
