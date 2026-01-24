@@ -1,6 +1,7 @@
 set.seed(1)
 #5
 #a
+
 # ham m(x) = 1 + sin(x^2)/x^2
 m <- function(x){
   1 + sin((x^2))/x^2
@@ -27,6 +28,20 @@ kernel_fun <- function(u, kernel){
   else stop("Unknown kernel")
 }
 
+#' Local Linear Regression
+#'
+#' @description
+#' Performs local linear regression (kernel smoothing) at given evaluation points.
+#' Formula: y_hat = mean(ww * y), where ww are local linear weights.
+#'
+#' @param x Numeric vector. Observed predictor values.
+#' @param y Numeric vector. Observed response values.
+#' @param x_eval Numeric vector. Points at which to evaluate the local linear regression.
+#' @param h Numeric. Bandwidth (smoothing parameter).
+#' @param kernel Character. Kernel type: "gauss" for Gaussian, "epan" for Epanechnikov.
+#'
+#' @return Numeric vector of estimated values at `x_eval`.
+#' @export
 loclin_reg <- function(x, y, x_eval, h, kernel){
   u <- x - x_eval
   uh <- u/h
@@ -41,6 +56,18 @@ loclin_reg <- function(x, y, x_eval, h, kernel){
 
 loclin_reg <- Vectorize(FUN = loclin_reg, vectorize.args = "x_eval")
 
+#' Rule-of-Thumb Bandwidth for Local Linear Regression
+#'
+#' @description
+#' Computes the optimal bandwidth using a plug-in Rule-of-Thumb approach,
+#' based on a quartic polynomial fit of the data.
+#'
+#' @param x Numeric vector. Observed predictor values.
+#' @param y Numeric vector. Observed response values.
+#' @param kernel Character. Kernel type: "gauss" or "epan".
+#'
+#' @return Numeric. Estimated bandwidth h_RT.
+#' @export
 h_ll_RT <- function(x, y, kernel) {
   if (kernel == "gauss") {
     R_k <- 0.5/sqrt(pi)
@@ -63,7 +90,18 @@ h_ll_RT <- function(x, y, kernel) {
   return(h_RT)
 }
 
-## Cross-validation
+#' Cross-Validation Bandwidth for Local Linear Regression
+#'
+#' @description
+#' Computes the optimal bandwidth by leave-one-out cross-validation (LOOCV).
+#'
+#' @param x Numeric vector. Observed predictor values.
+#' @param y Numeric vector. Observed response values.
+#' @param h Numeric vector. Candidate bandwidth values.
+#' @param kernel Character. Kernel type: "gauss" or "epan".
+#'
+#' @return Numeric vector. CV score for each bandwidth in `h`.
+#' @export
 CV_loclin <- function(x, y, h, kernel) {
   n <- length(y)
   S_diag <- numeric(n)
@@ -82,7 +120,18 @@ CV_loclin <- function(x, y, h, kernel) {
 
 CV_loclin <- Vectorize(FUN = CV_loclin, vectorize.args = "h")
 
-
+#' Generalized Cross-Validation Bandwidth for Local Linear Regression
+#'
+#' @description
+#' Computes the optimal bandwidth using generalized cross-validation (GCV).
+#'
+#' @param x Numeric vector. Observed predictor values.
+#' @param y Numeric vector. Observed response values.
+#' @param h Numeric vector. Candidate bandwidth values.
+#' @param kernel Character. Kernel type: "gauss" or "epan".
+#'
+#' @return Numeric vector. GCV score for each bandwidth in `h`.
+#' @export
 GCV_loclin <- function(x, y, h, kernel) {
   n <- length(y)
   S_diag <- numeric(n)
@@ -101,19 +150,12 @@ GCV_loclin <- function(x, y, h, kernel) {
 
 GCV_loclin <- Vectorize(FUN = GCV_loclin, vectorize.args = "h")
 
-
 h_grid <- seq(0.05, 1, length.out = 100)
 kernels <- c("gauss", "epan")
 
-result <- data.frame(
-  Kernel = character(),
-  h_RT   = numeric(),
-  h_CV   = numeric(),
-  h_GCV  = numeric()
-)
+res_list <- list()
 
 for (ker in kernels) {
-  
   # Rule of Thumb
   h_rt <- h_ll_RT(X, Y, kernel = ker)
   
@@ -125,16 +167,16 @@ for (ker in kernels) {
   gcv_vals <- GCV_loclin(X, Y, h = h_grid, kernel = ker)
   h_gcv <- h_grid[which.min(gcv_vals)]
   
-  result <- rbind(
-    result,
-    data.frame(
-      Kernel = ker,
-      h_RT   = h_rt,
-      h_CV   = h_cv,
-      h_GCV  = h_gcv
-    )
+  res_list[[ker]] <- data.frame(
+    Kernel = ker,
+    h_RT   = h_rt,
+    h_CV   = h_cv,
+    h_GCV  = h_gcv
   )
 }
+
+result <- do.call(rbind, res_list)
+
 
 #print(result)
 #  Kernel      h_RT      h_CV     h_GCV
@@ -185,56 +227,52 @@ m_epan_GCV <- loclin_reg(X, Y, x_grid, h_GCV_epan, kernel = "epan")
 #col = c("blue", "red", "green"),
 #lwd = 2)
 
-
 #d)
 
 res_d <- data.frame(
-  iter   = integer(),
-  kernel = character(),
-  method = character(),
-  h      = numeric()
+  iter = integer(600),
+  kernel = character(600),
+  method = character(600),
+  h = numeric(600),
+  stringsAsFactors = FALSE
 )
 
+idx <- 1
+
 for (i in 1:100) {
-  
-  # (a) Sinh dữ liệu mới
   X <- runif(100, 0, pi)
   sd_eps <- sqrt(m(X)^2 / 64)
   eps <- rnorm(100, 0, sd_eps)
   Y <- m(X) + eps
-  
   h_grid <- seq(0.05, 1, length.out = 100)
   
   for (ker in c("gauss", "epan")) {
-    
-    # Rule of Thumb
     h_rt <- h_ll_RT(X, Y, ker)
+    h_cv <- h_grid[which.min(CV_loclin(X, Y, h_grid, ker))]
+    h_gcv <- h_grid[which.min(GCV_loclin(X, Y, h_grid, ker))]
     
-    # CV
-    cv_vals <- CV_loclin(X, Y, h_grid, ker)
-    h_cv <- h_grid[which.min(cv_vals)]
-    
-    # GCV
-    gcv_vals <- GCV_loclin(X, Y, h_grid, ker)
-    h_gcv <- h_grid[which.min(gcv_vals)]
-    
-    # Lưu kết quả
-    res_d <- rbind(
-      res_d,
-      data.frame(iter = b, kernel = ker, method = "RT",  h = h_rt),
-      data.frame(iter = b, kernel = ker, method = "CV",  h = h_cv),
-      data.frame(iter = b, kernel = ker, method = "GCV", h = h_gcv)
-    )
+    res_d[idx, ] <- list(i, ker, "RT", h_rt); idx <- idx + 1
+    res_d[idx, ] <- list(i, ker, "CV", h_cv); idx <- idx + 1
+    res_d[idx, ] <- list(i, ker, "GCV", h_gcv); idx <- idx + 1
   }
 }
+# Tạo thư mục lưu plot nếu chưa có
+dir.create("./output/plots", recursive = TRUE, showWarnings = FALSE)
+
+# Lưu boxplot Gaussian kernel
+png(filename = "./output/plots/ex_5d_Gaussian.png", width = 800, height = 600)
 boxplot(h ~ method,
         data = subset(res_d, kernel == "gauss"),
         main = "Bandwidth variability (Gaussian kernel)",
         ylab = "Optimal bandwidth h",
         col = c("lightblue", "pink", "lightgreen"))
+dev.off()
+
+# Lưu boxplot Epan kernel
+png(filename = "./output/plots/ex_5d_Epan.png", width = 800, height = 600)
 boxplot(h ~ method,
         data = subset(res_d, kernel == "epan"),
         main = "Bandwidth variability (Epan kernel)",
         ylab = "Optimal bandwidth h",
         col = c("lightblue", "pink", "lightgreen"))
-
+dev.off()
