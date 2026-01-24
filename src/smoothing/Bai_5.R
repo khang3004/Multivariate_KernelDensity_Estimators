@@ -159,6 +159,8 @@ h_gauss_rt  <- numeric(100)
 h_gauss_cv  <- numeric(100)
 h_gauss_gcv <- numeric(100)
 
+idx <- 1
+
 for (i in 1:100) {
   # Generate new dataset
   Xi <- runif(100, 0, pi)
