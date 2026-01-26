@@ -1,12 +1,25 @@
-\subsection{Problem}
+\section{Problem}
 
-% --- SLIDE 1: THE PROBLEM ---
+
+% --- SLIDE 1: Problem Statement ---
+\begin{frame}{Problem Statement}
+\begin{itemize}
+    \item<1-> \textcolor{blue}{Kernel density estimation (KDE)} is a flexible nonparametric method.
+    \item<2-> \textcolor{orange}{Univariate KDE} is well understood and easy to implement.
+    \item<3-> In practice, data are often \textcolor{purple}{multivariate}.
+    \item<4-> This motivates extending KDE to \textcolor{teal}{$p$-dimensional spaces}.
+\end{itemize}
+\end{frame}
+
+
+% --- SLIDE 2: THE PROBLEM ---
 \begin{frame}{The Curse of Dimensionality}
     \begin{columns}
         % Left Column: Concepts
         \begin{column}{0.5\textwidth}
             \begin{alertblock}{The Challenge}
-                High-dimensional space ($p > 3$) is vastly different from univariate space. Data becomes incredibly \textbf{sparse}.
+                High-dimensional space ($p > 3$) is vastly different from univariate space.
+                Data becomes incredibly \textbf{sparse}.
             \end{alertblock}
 
             \pause
@@ -15,18 +28,18 @@
             \textbf{Key Implications:}
             \begin{itemize}
                 \item Points have very few near neighbors.
-                \item "Empty space" phenomenon: For $p=10$, $>50\%$ of mass lies in the extreme tails ($>1.6\sigma$).
+                \item ``Empty space'' phenomenon: For $p=10$, $>50\%$ of mass lies in the extreme tails ($>1.6\sigma$).
                 \item Visualization is difficult without dimension reduction.
             \end{itemize}
         \end{column}
 
-        % Right Column: Visual Placeholder
+        % Right Column: Visual
         \begin{column}{0.5\textwidth}
             \centering
-            % TODO: Insert a plot showing 1D vs 2D vs 3D point density
-            % Suggestion: A 3D scatter plot showing points drifting apart
-            \includegraphics[width=0.9\linewidth]{example-image-a}
-            \captionof{figure}{Sparseness in High Dimensions}
+            \includegraphics[width=0.9\linewidth]{sparseness_highdim}
+
+            \vspace{0.3em}
+            \captionof{figure}{\scriptsize Sparseness in High Dimensions}
         \end{column}
     \end{columns}
 \end{frame}
