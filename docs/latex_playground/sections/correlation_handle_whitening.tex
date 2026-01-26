@@ -1,17 +1,120 @@
-% --- SLIDE 5: HANDLING CORRELATION (WHITENING) ---
-\begin{frame}{Handling Correlation: Whitening (Sphering)}
-    Product kernels fail when data is highly correlated (variables are not axis-aligned).
+\section{Decorrelation by Whiteninig}
 
-    \textbf{Solution Strategy:}
-    \begin{enumerate}
-        \item \textbf{Transform:} Rotate data to eliminate correlation.
-        \[ \vect{Z}_i = \vect{\Lambda}^{-1/2} \vect{P}^T (\vect{x}_i - \bar{\vect{x}}) \]
-        \item \textbf{Estimate:} Apply Product KDE on transformed data $\vect{Z}$.
-        \item \textbf{Back-transform:} Map results back to original space.
-    \end{enumerate}
 
-    \vspace{0.5em}
-    \centering
-    % TODO: Insert Image: [Correlated Data] -> [Rotation] -> [Uncorrelated Data]
-    \includegraphics[width=0.8\linewidth, height=3cm]{example-image-c}
+% --- SLIDE 6: THE TRANSFORMATION WORKFLOW (ANIMATED) ---
+\begin{frame}{Implementation Workflow (Step-by-Step)}
+    \begin{columns}[c]
+        % Left Column: The Steps (Text)
+        \begin{column}{0.55\textwidth}
+            \small
+            \textbf{Standard Operating Procedure (SOP):}
+
+            % [<+->] automatically uncovers items one by one (1, then 2, then 3...)
+            \begin{enumerate}[<+->]
+                \setlength\itemsep{0.5em}
+
+                \item \textbf{Decompose:} Compute Eigen-decomposition of Covariance Matrix $\hat{\vect{\Sigma}} = \vect{P} \vect{\Lambda} \vect{P}^T$.
+
+                \item \textbf{Transform (Whitening):} Rotate data to eliminate correlation.
+                % The box appears with item 2
+                \begin{equation*}
+                    \boxed{\vect{Z}_i = \vect{\Lambda}^{-1/2}\vect{P}^T(\vect{x}_i - \bar{\vect{x}})}
+                \end{equation*}
+
+                \item \textbf{Estimate:} Apply simple Product Kernel on the whitened data $\vect{Z}$.
+
+                \item \textbf{Reconstruct:} Adjust density scale to original space (Jacobian determinant).
+                \[ \hat{f}_{\vect{X}}(\vect{x}) = \hat{f}_{\vect{Z}}(\vect{z}) \cdot \alert{|\hat{\vect{\Sigma}}|^{-1/2}} \]
+            \end{enumerate}
+        \end{column}
+
+        % Right Column: The Image (Static)
+        % We keep the image visible from the start so they can reference it while reading steps
+        \begin{column}{0.45\textwidth}
+            \centering
+            \includegraphics[width=0.95\linewidth, height=6cm, keepaspectratio]{whitening_transform}
+            \vspace{0.2em}
+            \captionof{figure}{\scriptsize $\vect{X}$ (Correlated) $\to$ $\vect{Z}$ (Spherical)}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- SLIDE 7: PERFORMANCE COMPARISON (ANIMATED) ---
+\begin{frame}{Performance Comparison}
+
+    \begin{columns}[c]
+        % Left Column: Image (Always visible to set the context)
+        \begin{column}{0.6\textwidth}
+            \centering
+            \includegraphics[height=4.0cm, keepaspectratio]{white_mkde_vs_native}
+            \vspace{-0.2em}
+            \captionof{figure}{\scriptsize Naive (Left) vs. Whitened (Right)}
+        \end{column}
+
+        % Right Column: Text Observations (Revealed sequentially)
+        \begin{column}{0.4\textwidth}
+            \small
+            \textbf{Key Observations:}
+            \begin{itemize}
+                \setlength\itemsep{0.5em}
+
+                % Click 2: Reveal the Failure analysis
+                \item<2-> \textbf{Naive Approach:}
+                \textcolor{red}{\textbf{Fail.}} Constrained to axis-aligned shapes. Misses diagonal correlations.
+
+                % Click 3: Reveal the Success analysis
+                \item<3-> \textbf{Whitened MKDE:}
+                \textcolor{darkgreen}{\textbf{Success.}} Contours adapt perfectly to the data's orientation.
+            \end{itemize}
+        \end{column}
+    \end{columns}
+
+    \vspace{1em}
+
+    % Click 4: Reveal the Final Verdict (The "Takeaway" message)
+    \onslide<4->{
+        \begin{alertblock}{Final Verdict}
+            \centering \footnotesize
+            Whitening enables \textbf{Product Kernels} to model complex correlations with $O(n)$ efficiency.
+        \end{alertblock}
+    }
+\end{frame}
+
+
+% --- SLIDE 5: THE MATHEMATICAL SHORTCUT (ANIMATED) ---
+\begin{frame}{Generalized Estimator (Theory)}
+    Instead of performing manual transformation steps, we can mathematically express the estimator directly using the **Mahalanobis Distance**:
+
+    % 1. The Equation is always visible, but parts light up sequentially
+    \begin{block}{General Multivariate KDE Equation (10.44)}
+        \begin{equation}
+             \hat{f}(\vect{x}) = \frac{\alert<2>{|\hat{\vect{\Sigma}}|^{-1/2}}}{nh^p} \sum_{i=1}^{n} K \left( \frac{\alert<3>{(\vect{x} - \vect{X}_i)^T \hat{\vect{\Sigma}}^{-1} (\vect{x} - \vect{X}_i)}}{h} \right)
+        \end{equation}
+    \end{block}
+
+    \vspace{1em}
+    % 2. Columns appear strictly when their corresponding math term is highlighted
+    \begin{columns}[t]
+        % Left Column: Appears on Click 2 (Matches |\Sigma|^{-1/2})
+        \begin{column}{0.48\textwidth}
+            \onslide<2->{
+                \textbf{\alert<2>{1. Volume Correction:}}
+                \begin{itemize}
+                    \item The term $|\hat{\vect{\Sigma}}|^{-1/2}$ adjusts the density scale.
+                    \item Ensures the total probability integrates to 1 after "stretching" space.
+                \end{itemize}
+            }
+        \end{column}
+
+        % Right Column: Appears on Click 3 (Matches Mahalanobis Distance)
+        \begin{column}{0.48\textwidth}
+            \onslide<3->{
+                \textbf{\alert<3>{2. Shape Adaptation:}}
+                \begin{itemize}
+                    \item Uses \textbf{Mahalanobis Distance} instead of Euclidean.
+                    \item Captures the correlation structure (orientation) of the data.
+                \end{itemize}
+            }
+        \end{column}
+    \end{columns}
 \end{frame}
