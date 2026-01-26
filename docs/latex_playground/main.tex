@@ -26,20 +26,20 @@
 % Thêm [c] vào đây để ép logo và chữ căn giữa theo chiều dọc
     \begin{columns}[c]
         \begin{column}{0.3\textwidth}
-            Faculty of Mathematics \& Computer Science \\
+            Master of Data Science \\
             \textbf{University of Science, VNU-HCM}
         \end{column}
 
         \begin{column}{0.2\textwidth}
             \centering
-            \includegraphics[height=2cm]{logo_maths_informatics_faculty}
+            \includegraphics[height=2cm]{hcmus_logo}
         \end{column}
         \begin{column}{0.25\textwidth}
             \centering
             \begin{itemize}
-                \item 25CO1035
-                \item 25C01036
-                \item 25C01024
+                \item 25C01035
+                \item 25C01039
+                \item 25C01041
             \end{itemize}
         \end{column}
     \end{columns}
@@ -64,18 +64,38 @@
 
     % 3. Modular Content
     % Each member works on their own file in the 'sections' folder
-    \include{sections/introduction}  % Introduction & Motivation
     \include{sections/problem}
     \include{sections/general_mkde}
     \include{sections/product_kernels}
     \include{sections/bandwidth_selection}
     \include{sections/correlation_handle_whitening}
-    % 4. Q&A Slide
-    \begin{frame}[plain] % 'plain' removes header/footer
+    % --- FINAL SLIDE: Q&A & CONTACT ---
+    \begin{frame}[plain] % [plain] để xóa số trang và header, tạo sự tập trung
         \centering
-        \Huge \textcolor{darkred}{Thank You vi da den!}\\
-        \vspace{1em}
-        \Large Q \& A
-    \end{frame}
 
+        % 1. Lời cảm ơn trang trọng (Standard Formal Phrase)
+        \vspace{1cm}
+        {\Huge \bfseries \textcolor{darkred}{Thank You for Your Attention!}}
+
+        \vspace{1.5cm}
+
+        % 2. Phần Q&A
+        {\LARGE \textbf{Q \& A}} \\
+        \vspace{0.5em}
+        \textit{\color{gray} We are open to any questions or feedback.}
+
+        \vspace{2cm}
+
+        % 3. Thông tin kết nối (Project Resource) - Dấu hiệu của Senior
+        % Dùng box bo tròn để chứa link GitHub/Email
+        \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{block title}
+        \textbf{Project Source Code \& Slides:} \\
+        \vspace{0.3em}
+        \footnotesize \url{https://github.com/khang3004/Multivariate_KernelDensity_Estimators.git}
+        \end{beamercolorbox}
+
+        \vspace{0.5em}
+        \scriptsize \textbf{Contact:} \texttt{21C0103580@student.hcmus.edu.vn}
+
+    \end{frame}
 \end{document}

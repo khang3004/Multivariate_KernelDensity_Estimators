@@ -1,22 +1,47 @@
-\subsection{General Multivariate Kernel Density Estimators}
-% --- SLIDE 2: GENERAL FORMULA ---
+% --- SLIDE 2: GENERAL FORMULA (ANIMATED) ---
 \begin{frame}{General Multivariate Estimator}
     Let $\vect{x}$ be a $p$-dimensional random vector. The general estimator is defined as:
 
+    % 1. The Block highlights specific math terms based on the click sequence
     \begin{block}{General Multivariate KDE}
         \begin{equation}
-            \hat{f}(\vect{x}) = \frac{1}{n |\vect{H}|} \sum_{i=1}^{n} K\left( \vect{H}^{-1} (\vect{x} - \vect{x}_i) \right)
+            % <2>: Highlight H (Matrix)
+            % <3>: Highlight Determinant (Volume)
+            % <4>: Highlight Kernel (Function)
+            \hat{f}(\vect{x}) = \frac{1}{n \alert<3>{|\vect{H}|}} \sum_{i=1}^{n} \alert<4>{K}\left( \alert<2>{\vect{H}^{-1}} (\vect{x} - \vect{x}_i) \right)
         \end{equation}
     \end{block}
 
     \vspace{1em}
     \textbf{Components:}
     \begin{itemize}
-        \item $\vect{H}$ ($p \times p$): \textbf{Bandwidth Matrix} (controls orientation and scaling).
-        \item $|\vect{H}|$: Determinant of $\vect{H}$ (normalizing constant).
-        \item $K$: Multivariate kernel function (usually symmetric).
+        \setlength\itemsep{0.6em} % Increase spacing for readability
+
+        % CLICK 2: Explain H (Bandwidth Matrix)
+        \item<2-> \alert<2>{$\vect{H}$ ($p \times p$): \textbf{Bandwidth Matrix}.}
+        \begin{itemize}
+            \footnotesize \item Controls the \textbf{orientation} and \textbf{scaling} of the kernel (defines the ellipse shape).
+        \end{itemize}
+
+        % CLICK 3: Explain Determinant (Volume)
+        \item<3-> \alert<3>{$|\vect{H}|$: Determinant (Volume Factor).}
+        \begin{itemize}
+            \footnotesize \item Acts as a normalizing constant to ensure $\int \hat{f} = 1$.
+        \end{itemize}
+
+        % CLICK 4: Explain Kernel Function
+        \item<4-> \alert<4>{$K$: Multivariate Kernel Function.}
+        \begin{itemize}
+            \footnotesize \item Typically a symmetric probability density (e.g., Multivariate Normal).
+        \end{itemize}
     \end{itemize}
 
     \vspace{0.5em}
-    \small \textit{Note: Specifying a full matrix $\vect{H}$ is computationally expensive.}
+    % CLICK 5: The Constraint/Warning
+    \onslide<5->{
+        \begin{alertblock}{Complexity Note}
+            \centering \small
+            Specifying a \textbf{full} matrix $\vect{H}$ is computationally expensive ($O(p^2)$ parameters).
+        \end{alertblock}
+    }
 \end{frame}

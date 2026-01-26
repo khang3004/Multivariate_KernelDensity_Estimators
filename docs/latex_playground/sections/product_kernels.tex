@@ -1,28 +1,50 @@
-\section{Simplification by Product Kernels}
-% --- SLIDE 3: PRODUCT KERNELS (SIMPLIFICATION) ---
+\section{Simplification by Product Kernel method}
+% --- SLIDE 3: PRODUCT KERNELS (ANIMATED) ---
 \begin{frame}{Practical Approach: Product Kernels}
-    To simplify, we assume independence between dimensions (diagonal $\vect{H}$).
-    The kernel becomes a product of univariate kernels:
+    % 1. CONCEPT: Start with the core assumption
+    To simplify the complexity, we assume \alert<2>{\textbf{independence}} between dimensions.
+    \begin{itemize}
+        \item This implies the Bandwidth Matrix $\vect{H}$ is \textbf{diagonal}.
+    \end{itemize}
 
-    \begin{equation}
-        \hat{f}(\vect{x}) = \frac{1}{n} \sum_{i=1}^{n} \prod_{j=1}^{p} \frac{1}{h_j} K\left( \frac{x_j - X_{ij}}{h_j} \right)
-    \end{equation}
+    % 2. FORMULA: Highlight the 'Product' operator to show simplification
+    \begin{block}{The Product Estimator}
+        \begin{equation}
+            \hat{f}(\vect{x}) = \frac{1}{n} \sum_{i=1}^{n} \underbrace{\alert<3>{\prod_{j=1}^{p}} \frac{1}{\alert<4>{h_j}} K\left( \frac{x_j - X_{ij}}{\alert<4>{h_j}} \right)}_{\text{Product of univariate kernels}}
+        \end{equation}
+    \end{block}
 
-    \begin{columns}
-        \begin{column}{0.5\textwidth}
-           \textbf{Advantages:}
+    \vspace{0.5em}
+
+    \begin{columns}[c]
+        % Left Column: Advantages (Sequential Disclosure)
+        \begin{column}{0.55\textwidth}
+           \textbf{Key Advantages:}
            \begin{itemize}
-               \item Reduces parameters from $p^2$ to $p$.
-               \item Computationally efficient ($O(n)$).
-               \item Allows different bandwidth $h_j$ for each dimension.
+               \setlength\itemsep{0.6em}
+
+               % CLICK 4: Parameter Reduction (The biggest win)
+               \item<4-> \textbf{Parameter Reduction:}
+               \newline \footnotesize Reduces unknowns from \alert<4>{$O(p^2)$} (full matrix) to \alert<4>{$O(p)$} (vector).
+
+               % CLICK 5: Efficiency
+               \item<5-> \textbf{Computational Efficiency:}
+               \newline \footnotesize No expensive matrix inversion needed.
+
+               % CLICK 6: Flexibility
+               \item<6-> \textbf{Flexibility:}
+               \newline \footnotesize Allows distinct bandwidth $h_j$ for each dimension.
            \end{itemize}
         \end{column}
 
-        \begin{column}{0.5\textwidth}
+        % Right Column: Visual Consequence (Static or Revealed)
+        % We keep it visible to show the "Constraint" of this method
+        \begin{column}{0.45\textwidth}
             \centering
-            % TODO: Insert a contour plot of a Product Kernel (Axis-aligned ellipses)
-            \includegraphics[width=0.9\linewidth]{2D_Contour_Density_Surface}
-            \captionof{figure}{Axis-aligned Kernel Contours}
+            % Use the specific image name you provided
+            \includegraphics[width=0.9\linewidth, height=4.5cm, keepaspectratio]{2D_Contour_Density_Surface}
+            \vspace{-0.2em}
+            \captionof{figure}{\scriptsize Consequence: \alert<2>{Axis-aligned} Contours}
         \end{column}
     \end{columns}
 \end{frame}
