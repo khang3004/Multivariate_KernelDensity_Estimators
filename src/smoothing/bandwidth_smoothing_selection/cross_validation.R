@@ -1,4 +1,4 @@
-source('src/smoothing/local_linear_regression.R')
+source('local_linear_regression.R')
 #' Brute Force Leave-1-out Cross-validation to optimize H
 #' @description
 #' Calculate the CV score by physically removing 1 data point at a time,
@@ -11,9 +11,10 @@ source('src/smoothing/local_linear_regression.R')
 #'
 #' @return A list containing the optimal h and the CV score
 #' @export
-cv_brute_force <- function(x_train, y_train, h_grid) {
+cv_brute_force <- function(x_train, y_train, h_grid,kernel = c("gauss", "epan")) {
   # 1. TYPE ASSERTION & VALIDATION
   stopifnot(length(x_train) == length(y_train))
+  kernel <- match.arg(kernel)
   n <- length(x_train)
   # --- Worker function ---
   cv_brute_force_each_h <- function(h) {
@@ -31,12 +32,12 @@ cv_brute_force <- function(x_train, y_train, h_grid) {
       # We use our previously written local_linear_regression module
       # Note: This function is vectorized, but here we pass a single point x_val
       pred <- local_linear_regression(
-        x_train = x_blind,
-        y_train = y_blind,
-        x_query = x_val,
-        h = h
+        x_train = x_train[-i],
+        y_train = y_train[-i],
+        x_query = x_train[i],
+        h = h,
+        kernel = kernel
       )
-
       # 3. Accumulate Error
       # Handle NA (in case bandwidth is too small to find neighbors)
       if (!is.na(pred)) {
@@ -79,9 +80,9 @@ cv_brute_force <- function(x_train, y_train, h_grid) {
 #'
 #' @return A list containing the optimal h, minimum CV error,  the CV score
 #' @export
-cv_shortcut <- function(x_train, y_train, h_grid) {
+cv_shortcut <- function(x_train, y_train, h_grid, kernel = c("gauss", "epan")) {
   stopifnot(length(x_train) == length(y_train))
-
+  kernel <- match.arg(kernel)
   cv_shortcut_each_h <- function(h) {
     if (h <= 0) return(Inf)
 
@@ -92,6 +93,7 @@ cv_shortcut <- function(x_train, y_train, h_grid) {
       y_train = y_train,
       x_query = x_train,
       h = h,
+      kernel = kernel,
       return_leverage = TRUE
     )
 
@@ -129,8 +131,9 @@ cv_shortcut <- function(x_train, y_train, h_grid) {
 #'
 #' @return A list containing the optimal h, minimum CV error,  the CV score
 #' @export
-generalized_cv_shortcut <- function(x_train, y_train, h_grid) {
+generalized_cv_shortcut <- function(x_train, y_train, h_grid, kernel = c("gauss", "epan")) {
   stopifnot(length(x_train) == length(y_train))
+  kernel <- match.arg(kernel)
   n <- length(x_train)
 
   cv_gcv_each_h <- function(h) {
@@ -141,6 +144,7 @@ generalized_cv_shortcut <- function(x_train, y_train, h_grid) {
       y_train = y_train,
       x_query = x_train,
       h = h,
+      kernel = kernel,
       return_leverage = TRUE
     )
 
@@ -173,7 +177,6 @@ generalized_cv_shortcut <- function(x_train, y_train, h_grid) {
 
 #' 4. Grab CV \& Generalized CV into only function
 
-source('src/smoothing/local_linear_regression.R')
 
 #' Optimized & Robust Cross-Validation Selection
 #'
@@ -193,11 +196,13 @@ source('src/smoothing/local_linear_regression.R')
 #' @return A list containing optimal h for selected metrics and a full score table.
 #' @export
 bw_cv_final <- function(x_train, y_train, h_grid,
+                        kernel = c("gauss", "epan"),
                         metric = c("both", "cv", "gcv"),
                         strategies = c("bound", "clip")) {
 
   # --- 1. SETUP & VALIDATION ---
   stopifnot(length(x_train) == length(y_train))
+  kernel <- match.arg(kernel)
   metric <- match.arg(metric)
   n <- length(x_train)
 
@@ -217,7 +222,9 @@ bw_cv_final <- function(x_train, y_train, h_grid,
 
     fit <- local_linear_regression(
       x_train, y_train, x_query = x_train,
-      h = h, return_leverage = TRUE
+      h = h,
+      kernel = kernel, 
+      return_leverage = TRUE
     )
 
     y_hat <- fit$y_hat
