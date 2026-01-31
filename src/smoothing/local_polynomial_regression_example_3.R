@@ -42,5 +42,4 @@ for (o in orbits) {
   
   legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1)
 }
-# Summary: Error system is computationally singular: reciprocal condition number = 2.95886e-17
-# This means that the matrix is nearly singular or these two feature have a strong correlation
+# Summary:
