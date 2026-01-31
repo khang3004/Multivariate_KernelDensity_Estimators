@@ -32,5 +32,3 @@ lines(x_query, y_hat_2, col = 'red', lwd = 2)
 
 legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1)
 
-# Summary: the correlation between temperatures and radius is nonlinear. The temperature
-# decreases as the radius increases from 3375 to 3400, and then begins to increase gradually.

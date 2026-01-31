@@ -38,8 +38,6 @@ for (o in orbits) {
   lines(x_query, y_hat_1, col = 'blue', lwd = 2)
   lines(x_query, y_hat_2, col = 'red', lwd = 2)
   
-  legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1)
+  legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=0.5)
 }
-# Summary: The temperature decreases as the radius increases from 3375 to 3400, and then begins
-# to increase gradually at orbit 1, 2, 6. The temperature increases slightly and then 
-# gradually decreases as the radius increases at orbit 3, 4, 5, 7.
+

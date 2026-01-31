@@ -70,7 +70,7 @@ local_polynomial_regression <- function(x_train, y_train, x_query, p, h = NULL) 
   }
   
   # --- 3. VECTORIZATION ---
-  y_hat <- lapply(x_query, estimate_single_detailed)
+  y_hat <- vapply(x_query, estimate_single_detailed, FUN.VALUE = numeric(1))
   
   # --- 4. RETURN logic ---
   return(y_hat = y_hat)
