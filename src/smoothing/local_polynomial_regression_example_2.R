@@ -2,9 +2,11 @@ source('./src/smoothing/local_polynomial_regression.R')
 marsbig <- read.table('./data/marsbig.dat', header = TRUE)
 
 #' Local Polynomial Regression Examples 2
+#' 
 #' @param Planet Radius
 #' @param Temperatures
 #' @param Orbit
+#' 
 #' @return Temperature trend with variable radius each orbit
 
 # Get unique orbit
@@ -35,6 +37,8 @@ for (o in orbits) {
   
   lines(x_query, y_hat_1, col = 'blue', lwd = 2)
   lines(x_query, y_hat_2, col = 'red', lwd = 2)
+  
+  legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1)
 }
 # Summary: The temperature decreases as the radius increases from 3375 to 3400, and then begins
 # to increase gradually at orbit 1, 2, 6. The temperature increases slightly and then 

@@ -4,9 +4,11 @@ marsbig <- read.table('./data/marsbig.dat', header = TRUE)
 marsbig
 
 #' Local Polynomial Regression Examples 3
+#' 
 #' @param Pressure
 #' @param Temperatures
 #' @param Orbit
+#' 
 #' @return Temperature trend with variable radius each orbit
 
 # Get unique orbit
@@ -37,6 +39,8 @@ for (o in orbits) {
   
   lines(x_query, y_hat_1, col = 'blue', lwd = 2)
   lines(x_query, y_hat_2, col = 'red', lwd = 2)
+  
+  legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1)
 }
 # Summary: Error system is computationally singular: reciprocal condition number = 2.95886e-17
 # This means that the matrix is nearly singular or these two feature have a strong correlation
