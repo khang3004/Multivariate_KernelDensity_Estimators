@@ -1,8 +1,6 @@
 source(here::here('src/smoothing/local_polynomial_regression.R'))
 marsbig <- read.table(here::here('data','marsbig.dat'), header = TRUE)
 
-marsbig
-
 #' Local Polynomial Regression Examples 3
 #' 
 #' @param Pressure
