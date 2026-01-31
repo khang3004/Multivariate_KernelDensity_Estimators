@@ -15,7 +15,7 @@ local_polynomial_regression <- function(x_train, y_train, x_query, p, h = NULL) 
   # --- 1. VALIDATION ---
   stopifnot(length(x_train) == length(y_train), p >= 0)
   
-  # Check bandwidth
+  # Check if bandwidth is Null
   if (is.null(h)) {
     # Define grid of bandwidth
     # min_dist: min distance between each pair of x_train
@@ -31,7 +31,12 @@ local_polynomial_regression <- function(x_train, y_train, x_query, p, h = NULL) 
       fit <- bw_cv_final(x_train, y_train, grid, metric = 'cv')
       h <- fit$opt_h_cv
     } else {
+      fit <- bw_cv_final(x_train, y_train, grid, metric = 'gcv')
       h <- fit$opt_h_gcv
+    }
+  } else {
+    if (h <= 0) {
+      stop('h > 0 or NULL is not TRUE')
     }
   }
   # Internal Kernel: K(u) = 1 / sqrt(2 * pi) * exp(-0.5 * u^2)
