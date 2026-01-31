@@ -1,5 +1,5 @@
 source(here::here('src/smoothing/local_polynomial_regression.R'))
-mars <- read.table(here::here("data", "mars.dat"), header = TRUE)
+mars <- read.table(here::here('data', 'mars.dat'), header = TRUE)
 
 #' Local Polynomial Regression Examples 1
 #' @description Predict temperature trend based on the changes of planet radius.

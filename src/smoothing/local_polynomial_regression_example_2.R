@@ -1,5 +1,5 @@
-source('./src/smoothing/local_polynomial_regression.R')
-marsbig <- read.table('./data/marsbig.dat', header = TRUE)
+source(here::here('src/smoothing/local_polynomial_regression.R'))
+marsbig <- read.table(here::here('data','marsbig.dat'), header = TRUE)
 
 #' Local Polynomial Regression Examples 2
 #' 
@@ -38,6 +38,6 @@ for (o in orbits) {
   lines(x_query, y_hat_1, col = 'blue', lwd = 2)
   lines(x_query, y_hat_2, col = 'red', lwd = 2)
   
-  legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=0.5)
+  legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1, cex=0.85)
 }
 
