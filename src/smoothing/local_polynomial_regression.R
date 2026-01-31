@@ -36,7 +36,7 @@ local_polynomial_regression <- function(x_train, y_train, x_query, p, h = NULL) 
     }
   } else {
     if (h <= 0) {
-      stop('h > 0 or NULL is not TRUE')
+      stop('h must be positive or null')
     }
   }
   # Internal Kernel: K(u) = 1 / sqrt(2 * pi) * exp(-0.5 * u^2)
@@ -57,9 +57,14 @@ local_polynomial_regression <- function(x_train, y_train, x_query, p, h = NULL) 
     # Create design matrix Z
     Z <- sapply(0:p, function(u) diffs ^ u)
     
-    # Calculate y_hat by formula e^T * (Z^T * W * Z)^(-1) * W * Y; e = (1, 0, 0,.., 0)
+    # Implement Ridge Regularization to handle singular matrix
+    lambda <- 10 ^ (-6)
+    I <- diag(p + 1)
+    
+    # Calculate y_hat by formula e^T * (Z^T * W * Z + lambda * I)^(-1) * W * Y; 
+    # e = (1, 0, 0,.., 0)
     e <- c(1, rep(0, p))
-    y_hat = t(e) %*% solve(t(Z) %*% W %*% Z) %*% t(Z) %*% W %*% y_train
+    y_hat = t(e) %*% solve(t(Z) %*% W %*% Z + lambda * I) %*% t(Z) %*% W %*% y_train
     
     return(y_hat = y_hat)
   }
