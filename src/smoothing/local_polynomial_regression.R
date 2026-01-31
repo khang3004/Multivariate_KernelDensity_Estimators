@@ -1,4 +1,4 @@
-source('./src/smoothing/bandwidth_smoothing_selection/cross_validation.R')
+source(here::here('src/smoothing/bandwidth_smoothing_selection/cross_validation.R'))
 
 #' Local Polynomial Regression
 #' @description Implements the Local Polynomial Regression

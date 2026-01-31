@@ -1,5 +1,5 @@
-source('./src/smoothing/local_polynomial_regression.R')
-mars <- read.table('./data/mars.dat', header = TRUE)
+source(here::here('src/smoothing/local_polynomial_regression.R'))
+mars <- read.table(here::here("data", "mars.dat"), header = TRUE)
 
 #' Local Polynomial Regression Examples 1
 #' @description Predict temperature trend based on the changes of planet radius.
@@ -29,6 +29,8 @@ plot(
 
 lines(x_query, y_hat_1, col = 'blue', lwd = 2)
 lines(x_query, y_hat_2, col = 'red', lwd = 2)
+
+legend("topright", legend=c("p=1", "p=2"), col=c("blue", "red"), lty=1)
 
 # Summary: the correlation between temperatures and radius is nonlinear. The temperature
 # decreases as the radius increases from 3375 to 3400, and then begins to increase gradually.
