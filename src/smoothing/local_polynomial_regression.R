@@ -13,12 +13,26 @@ source(here::here('src/smoothing/bandwidth_smoothing_selection/cross_validation.
 
 local_polynomial_regression <- function(x_train, y_train, x_query, p, h = NULL) {
   # --- 1. VALIDATION ---
-  stopifnot(length(x_train) == length(y_train), h > 0, p >= 0)
+  stopifnot(length(x_train) == length(y_train), p >= 0)
   
   # Check bandwidth
   if (is.null(h)) {
-    fit <- generalized_cv_shortcut(x_train, y_train, seq(2, 100, 2))
-    h <- fit$optimal_h
+    # Define grid of bandwidth
+    # min_dist: min distance between each pair of x_train
+    # range_x: Diff between max and min of x_train
+    # Note: range_x / 2 avoid over-smoothing
+    min_dist <- min(diff(sort(unique(x_train))))
+    range_x <- diff(range(x_train))
+    grid <- seq(min_dist, range_x / 2, length.out = 20)
+    
+    # If length of x_train <= 10 ^ 3: using metric = 'cv', else: using metric = 'gcv'
+    n <- length(x_train)
+    if (n <= 10 ^ 3) {
+      fit <- bw_cv_final(x_train, y_train, grid, metric = 'cv')
+      h <- fit$opt_h_cv
+    } else {
+      h <- fit$opt_h_gcv
+    }
   }
   # Internal Kernel: K(u) = 1 / sqrt(2 * pi) * exp(-0.5 * u^2)
   .gaussian_kernel <- function(u) 1 / sqrt(2 * pi) * exp(-0.5 * u ^ 2)

@@ -9,7 +9,7 @@ marsbig <- read.table('./data/marsbig.dat', header = TRUE)
 #' 
 #' @return Temperature trend with variable radius each orbit
 
-# Get unique orbit
+# Get unique orbitgit 
 orbits <- unique(marsbig$orbit)
 
 par(mfrow = c(2, 4))
