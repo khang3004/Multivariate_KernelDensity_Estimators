@@ -1,4 +1,5 @@
 source('local_linear_regression.R')
+source(here::here('src/smoothing/local_linear_regression.R'))
 #' Brute Force Leave-1-out Cross-validation to optimize H
 #' @description
 #' Calculate the CV score by physically removing 1 data point at a time,
