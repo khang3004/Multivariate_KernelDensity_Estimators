@@ -1,7 +1,6 @@
 set.seed(1)
 # 5
 # a
-# ham m(x) = 1 + sin(x^2)/x^2
 m <- function(x) {
   1 + sin((x^2)) / x^2
 }
