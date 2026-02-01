@@ -1,22 +1,36 @@
-\subsection{General Multivariate Kernel Density Estimators}
-% --- SLIDE 2: GENERAL FORMULA ---
+% --- SLIDE 2: GENERAL FORMULA (REFINED CONTENT) ---
 \begin{frame}{General Multivariate Estimator}
-    Let $\vect{x}$ be a $p$-dimensional random vector. The general estimator is defined as:
+    Let $\vect{x}$ be a $p$-dimensional random vector. The estimator is:
 
-    \begin{block}{General Multivariate KDE}
+    \begin{block}{General Multivariate KDE (Eq. 10.40)}
+        \setlength{\abovedisplayskip}{5pt} % Co nhẹ khoảng trắng
+        \setlength{\belowdisplayskip}{5pt}
         \begin{equation}
-            \hat{f}(\vect{x}) = \frac{1}{n |\vect{H}|} \sum_{i=1}^{n} K\left( \vect{H}^{-1} (\vect{x} - \vect{x}_i) \right)
+            \hat{f}(\vect{x}) = \frac{1}{n \alert<3>{|\vect{H}|}} \sum_{i=1}^{n} \alert<4>{K}\left( \alert<2>{\vect{H}^{-1}} (\vect{x} - \vect{X}_i) \right)
         \end{equation}
     \end{block}
 
-    \vspace{1em}
-    \textbf{Components:}
+    \vspace{0.8em}
+
+    \textbf{Core Components:}
     \begin{itemize}
-        \item $\vect{H}$ ($p \times p$): \textbf{Bandwidth Matrix} (controls orientation and scaling).
-        \item $|\vect{H}|$: Determinant of $\vect{H}$ (normalizing constant).
-        \item $K$: Multivariate kernel function (usually symmetric).
+        \setlength\itemsep{0.8em} % Tăng khoảng cách giữa các mục cho thoáng
+
+        \item<2-> \alert<2>{$\vect{H}$ (Bandwidth Matrix):}
+        Controls \textbf{shape \& orientation} of the kernel.
+
+        \item<3-> \alert<3>{$|\vect{H}|$ (Volume Factor):}
+        Normalizes the density to ensure $\int \hat{f} = 1$.
+
+        \item<4-> \alert<4>{$K$ (Kernel Function):}
+        A symmetric probability density (e.g., Gaussian).
     \end{itemize}
 
-    \vspace{0.5em}
-    \small \textit{Note: Specifying a full matrix $\vect{H}$ is computationally expensive.}
+    \vspace{1.5em}
+
+    % 3. COMPLEXITY NOTE (INLINE STYLE)
+    \onslide<5->{
+        \centering
+        \textbf{\textcolor{red}{Constraint:}} Optimizing a full $\vect{H}$ requires estimating \textbf{$O(p^2)$} parameters.
+    }
 \end{frame}

@@ -1,28 +1,55 @@
-\section{Simplification by Product Kernels}
-% --- SLIDE 3: PRODUCT KERNELS (SIMPLIFICATION) ---
+\section{Simplification by Product Kernel method}
+% --- SLIDE 3: PRODUCT KERNELS (ANIMATED) ---
+% --- SLIDE: PRODUCT KERNELS (OPTIMIZED) ---
 \begin{frame}{Practical Approach: Product Kernels}
-    To simplify, we assume independence between dimensions (diagonal $\vect{H}$).
-    The kernel becomes a product of univariate kernels:
+    \small % 1. Thu nhỏ font toàn bộ slide để tiết kiệm không gian
 
-    \begin{equation}
-        \hat{f}(\vect{x}) = \frac{1}{n} \sum_{i=1}^{n} \prod_{j=1}^{p} \frac{1}{h_j} K\left( \frac{x_j - X_{ij}}{h_j} \right)
-    \end{equation}
+    % 1. CONCEPT
+    To simplify complexity, we assume \alert<2>{\textbf{independence}} between dimensions.
+    \begin{itemize}
+        \item This implies the Bandwidth Matrix $\vect{H}$ is \textbf{diagonal}.
+    \end{itemize}
 
-    \begin{columns}
-        \begin{column}{0.5\textwidth}
-           \textbf{Advantages:}
+    \vspace{-0.2em} % Kéo khối công thức lên một chút
+
+    % 2. FORMULA
+    \begin{block}{The Product Estimator}
+        \begin{equation}
+            \hat{f}(\vect{x}) = \frac{1}{n} \sum_{i=1}^{n} \underbrace{\alert<3>{\prod_{j=1}^{p}} \frac{1}{\alert<4>{h_j}} K\left( \frac{x_j - X_{ij}}{\alert<4>{h_j}} \right)}_{\text{Product of univariate kernels}}
+        \end{equation}
+    \end{block}
+
+    % \vspace{0.5em} -> Bỏ dòng này để tiết kiệm đất
+
+    \begin{columns}[c]
+        % Left Column: Tăng độ rộng lên 0.6 để chữ đỡ bị rớt dòng
+        \begin{column}{0.6\textwidth}
+           \textbf{Key Advantages:}
            \begin{itemize}
-               \item Reduces parameters from $p^2$ to $p$.
-               \item Computationally efficient ($O(n)$).
-               \item Allows different bandwidth $h_j$ for each dimension.
+               \setlength\itemsep{0.3em} % Giảm khoảng cách giữa các mục
+
+               % CLICK 4
+               \item<4-> \textbf{Parameter Reduction:}
+               % Bỏ \newline, để text chạy tự nhiên sẽ tiết kiệm dòng hơn
+               \footnotesize Reduces unknowns from \alert<4>{$O(p^2)$} (matrix) to \alert<4>{$O(p)$} (vector).
+
+               % CLICK 5
+               \item<5-> \textbf{Computational Efficiency:}
+               \footnotesize No expensive matrix inversion needed.
+
+               % CLICK 6
+               \item<6-> \textbf{Flexibility:}
+               \footnotesize Allows distinct bandwidth $h_j$ for each dimension.
            \end{itemize}
         \end{column}
 
-        \begin{column}{0.5\textwidth}
+        % Right Column: Giảm độ rộng còn 0.4
+        \begin{column}{0.4\textwidth}
             \centering
-            % TODO: Insert a contour plot of a Product Kernel (Axis-aligned ellipses)
-            \includegraphics[width=0.9\linewidth]{2D_Contour_Density_Surface}
-            \captionof{figure}{Axis-aligned Kernel Contours}
+            % 2. Giảm chiều cao ảnh xuống 3.5cm (Con số an toàn)
+            \includegraphics[width=0.95\linewidth, height=3.5cm, keepaspectratio]{images/2D_Contour_Density_Surface}
+            \vspace{-0.2em}
+            \captionof{figure}{\scriptsize Consequence: \alert<2>{Axis-aligned} Contours}
         \end{column}
     \end{columns}
 \end{frame}
