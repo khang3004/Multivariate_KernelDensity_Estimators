@@ -1,47 +1,36 @@
-% --- SLIDE 2: GENERAL FORMULA (ANIMATED) ---
+% --- SLIDE 2: GENERAL FORMULA (REFINED CONTENT) ---
 \begin{frame}{General Multivariate Estimator}
-    Let $\vect{x}$ be a $p$-dimensional random vector. The general estimator is defined as:
+    Let $\vect{x}$ be a $p$-dimensional random vector. The estimator is:
 
-    % 1. The Block highlights specific math terms based on the click sequence
-    \begin{block}{General Multivariate KDE}
+    \begin{block}{General Multivariate KDE (Eq. 10.40)}
+        \setlength{\abovedisplayskip}{5pt} % Co nhẹ khoảng trắng
+        \setlength{\belowdisplayskip}{5pt}
         \begin{equation}
-            % <2>: Highlight H (Matrix)
-            % <3>: Highlight Determinant (Volume)
-            % <4>: Highlight Kernel (Function)
-            \hat{f}(\vect{x}) = \frac{1}{n \alert<3>{|\vect{H}|}} \sum_{i=1}^{n} \alert<4>{K}\left( \alert<2>{\vect{H}^{-1}} (\vect{x} - \vect{x}_i) \right)
+            \hat{f}(\vect{x}) = \frac{1}{n \alert<3>{|\vect{H}|}} \sum_{i=1}^{n} \alert<4>{K}\left( \alert<2>{\vect{H}^{-1}} (\vect{x} - \vect{X}_i) \right)
         \end{equation}
     \end{block}
 
-    \vspace{1em}
-    \textbf{Components:}
+    \vspace{0.8em}
+
+    \textbf{Core Components:}
     \begin{itemize}
-        \setlength\itemsep{0.6em} % Increase spacing for readability
+        \setlength\itemsep{0.8em} % Tăng khoảng cách giữa các mục cho thoáng
 
-        % CLICK 2: Explain H (Bandwidth Matrix)
-        \item<2-> \alert<2>{$\vect{H}$ ($p \times p$): \textbf{Bandwidth Matrix}.}
-        \begin{itemize}
-            \footnotesize \item Controls the \textbf{orientation} and \textbf{scaling} of the kernel (defines the ellipse shape).
-        \end{itemize}
+        \item<2-> \alert<2>{$\vect{H}$ (Bandwidth Matrix):}
+        Controls \textbf{shape \& orientation} of the kernel.
 
-        % CLICK 3: Explain Determinant (Volume)
-        \item<3-> \alert<3>{$|\vect{H}|$: Determinant (Volume Factor).}
-        \begin{itemize}
-            \footnotesize \item Acts as a normalizing constant to ensure $\int \hat{f} = 1$.
-        \end{itemize}
+        \item<3-> \alert<3>{$|\vect{H}|$ (Volume Factor):}
+        Normalizes the density to ensure $\int \hat{f} = 1$.
 
-        % CLICK 4: Explain Kernel Function
-        \item<4-> \alert<4>{$K$: Multivariate Kernel Function.}
-        \begin{itemize}
-            \footnotesize \item Typically a symmetric probability density (e.g., Multivariate Normal).
-        \end{itemize}
+        \item<4-> \alert<4>{$K$ (Kernel Function):}
+        A symmetric probability density (e.g., Gaussian).
     \end{itemize}
 
-    \vspace{0.5em}
-    % CLICK 5: The Constraint/Warning
+    \vspace{1.5em}
+
+    % 3. COMPLEXITY NOTE (INLINE STYLE)
     \onslide<5->{
-        \begin{alertblock}{Complexity Note}
-            \centering \small
-            Specifying a \textbf{full} matrix $\vect{H}$ is computationally expensive ($O(p^2)$ parameters).
-        \end{alertblock}
+        \centering
+        \textbf{\textcolor{red}{Constraint:}} Optimizing a full $\vect{H}$ requires estimating \textbf{$O(p^2)$} parameters.
     }
 \end{frame}

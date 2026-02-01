@@ -221,9 +221,9 @@ for (i in 1:100) {
     # Lưu kết quả
     res_d <- rbind(
       res_d,
-      data.frame(iter = b, kernel = ker, method = "RT",  h = h_rt),
-      data.frame(iter = b, kernel = ker, method = "CV",  h = h_cv),
-      data.frame(iter = b, kernel = ker, method = "GCV", h = h_gcv)
+      data.frame(iter = i, kernel = ker, method = "RT",  h = h_rt),
+      data.frame(iter = i, kernel = ker, method = "CV",  h = h_cv),
+      data.frame(iter = i, kernel = ker, method = "GCV", h = h_gcv)
     )
   }
 }

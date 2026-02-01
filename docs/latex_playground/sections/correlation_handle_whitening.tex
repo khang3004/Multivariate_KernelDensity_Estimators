@@ -1,4 +1,4 @@
-\section{Decorrelation by Whiteninig}
+\subsection{Decorrelation by Whiteninig}
 
 
 % --- SLIDE 6: THE TRANSFORMATION WORKFLOW (ANIMATED) ---
@@ -101,43 +101,45 @@
 \end{frame}
 
 
-% --- SLIDE 6.6: VISUAL INTUITION (GEOMETRY) ---
+% --- SLIDE 6.6: VISUAL INTUITION (GEOMETRY - FIXED) ---
 \begin{frame}{Conceptual Comparison: Visual Geometry (2/2)}
     \centering
     \textbf{From Correlation to Isotropy: A Visual Journey}
-    \vspace{1.5cm} % Tạo khoảng trống lớn cho hình vẽ thoáng
+    \vspace{1.0cm}
 
-    % TikZ Diagram (Now bigger and clearer)
     \begin{tikzpicture}[scale=1.2, transform shape]
-        % STEP 1: ORIGINAL
-        \node (origin) at (0,0) {\includegraphics[width=2cm]{example-image-a}}; % Placeholder: Correlated Data
-        \node[below=0.2cm] at (origin.south) {\small \textbf{Original}};
-        \node[below=0.6cm, gray] at (origin.south) {\scriptsize (Correlated)};
+        % --- STEP 1: ORIGINAL ---
+        \node (origin) at (0,0) {\includegraphics[width=2cm]{original_correlated_data}};
+        \node[below=0.1cm] at (origin.south) {\small \textbf{Original}};
+        \node[below=0.5cm, gray] at (origin.south) {\scriptsize (Correlated)};
 
-        % ARROW 1: PCA
-        \draw[->, thick, blue] (1.5,0) -- (3.0,0) node[midway, above] {\scriptsize $\vect{P}^T$};
-        \node[midway, below, blue] at (2.25,0) {\scriptsize Rotate};
+        % --- ARROW 1: PCA (FIXED) ---
+        % Gắn node chữ trực tiếp vào lệnh draw để không bị trôi
+        \draw[->, thick, blue] (1.3,0) -- (3.2,0)
+            node[midway, above] {\scriptsize $\vect{P}^T$}
+            node[midway, below] {\scriptsize \textbf{Rotate}};
 
-        % STEP 2: PCA SPACE
+        % --- STEP 2: PCA SPACE ---
         \onslide<2->{
-            \node (pca) at (4.5,0) {\includegraphics[width=2cm]{example-image-b}}; % Placeholder: Aligned Ellipse
-            \node[below=0.2cm] at (pca.south) {\small \textbf{PCA Space}};
-            \node[below=0.6cm, gray] at (pca.south) {\scriptsize (Uncorrelated but Elliptical)};
+            \node (pca) at (4.5,0) {\includegraphics[width=2cm]{PCA_data}};
+            \node[below=0.1cm] at (pca.south) {\small \textbf{PCA Space}};
+            \node[below=0.5cm, gray] at (pca.south) {\scriptsize (Elliptical)};
         }
 
-        % ARROW 2: WHITENING
+        % --- ARROW 2: WHITENING (FIXED) ---
         \onslide<3->{
-            \draw[->, thick, red] (6.0,0) -- (7.5,0) node[midway, above] {\scriptsize $\vect{\Lambda}^{-1/2}$};
-            \node[midway, below, red] at (6.75,0) {\scriptsize Scale};
+            \draw[->, thick, red] (5.8,0) -- (7.7,0)
+                node[midway, above] {\scriptsize $\vect{\Lambda}^{-1/2}$}
+                node[midway, below] {\scriptsize \textbf{Scale}};
 
-            % STEP 3: WHITENED SPACE
-            \node (white) at (9.0,0) {\includegraphics[width=2cm]{example-image-c}}; % Placeholder: Sphere
-            \node[below=0.2cm] at (white.south) {\small \textbf{Whitened}};
-            \node[below=0.6cm, gray] at (white.south) {\scriptsize (Spherical / Isotropic)};
+            % --- STEP 3: WHITENED SPACE ---
+            \node (white) at (9.0,0) {\includegraphics[width=2cm]{whited_data}};
+            \node[below=0.1cm] at (white.south) {\small \textbf{Whitened}};
+            \node[below=0.5cm, gray] at (white.south) {\scriptsize (Spherical)};
         }
     \end{tikzpicture}
 
-    \vspace{1cm}
+    \vspace{0.5cm}
     \onslide<3->{
         \small \textit{Note: Only the \textbf{Whitened} space is suitable for Product Kernels.}
     }
@@ -192,7 +194,7 @@
     % 1. The Equation is always visible, but parts light up sequentially
     \begin{block}{General Multivariate KDE Equation (10.44)}
         \begin{equation}
-             \hat{f}(\vect{x}) = \frac{\alert<2>{|\hat{\vect{\Sigma}}|^{-1/2}}}{nh^p} \sum_{i=1}^{n} K \left( \frac{\alert<3>{(\vect{x} - \vect{X}_i)^T \hat{\vect{\Sigma}}^{-1} (\vect{x} - \vect{X}_i)}}{h} \right)
+             \hat{f}(\vect{x}) = \frac{\alert<2>{|\hat{\vect{\Sigma}}|^{-1/2}}}{nh^p} \sum_{i=1}^{n} K \left( \frac{\alert<3>{(\vect{x} - \vect{x}_i)^T \hat{\vect{\Sigma}}^{-1} (\vect{x} - \vect{x}_i)}}{h} \right)
         \end{equation}
     \end{block}
 
@@ -266,33 +268,40 @@
     \end{columns}
 \end{frame}
 
-% --- SLIDE 5.1: FULL FORMULA COMPARISON (ANATOMY) ---
+% --- SLIDE 5.1: FULL FORMULA COMPARISON (COMPACT & OPTIMIZED) ---
 \begin{frame}{The "Lost Sibling" Revealed (2/2)}
     \small
-    Let's compare the \textbf{General MKDE} with the \textbf{Whitening Estimator} side-by-side.
-    \vspace{0.5em}
+    % Mẹo Senior: Co khoảng cách quanh công thức toán lại
+    \setlength{\abovedisplayskip}{3pt}
+    \setlength{\belowdisplayskip}{3pt}
 
-    % 1. THE GENERAL FORMULA (Reference)
+    Let's compare the \textbf{General MKDE} with the \textbf{Whitening Estimator} side-by-side.
+
+    % 1. THE GENERAL FORMULA
     \onslide<1->{
+        \vspace{0.3em} % Khoảng thở nhẹ
         \textbf{1. The General Form (Eq. 10.40):}
         \begin{equation*}
             \hat{f}(\vect{x}) = \frac{1}{n \alert<2>{|\mathbf{H}|}} \sum_{i=1}^{n} K \left( \alert<3>{\mathbf{H}^{-1} (\vect{x} - \vect{X}_i)} \right)
         \end{equation*}
     }
 
-    \vspace{1em}
-    \centering \Large $\downarrow$ \normalsize \textit{Substitute $\mathbf{H} \approx \hat{\mathbf{\Sigma}}^{1/2}$ (Data-driven)}
-    \vspace{1em}
+    % Phần chuyển tiếp: Thu gọn khoảng cách tối đa
+    \vspace{-0.2em}
+    \begin{center}
+        \Large $\downarrow$ \normalsize \textit{Substitute $\mathbf{H} \approx \hat{\mathbf{\Sigma}}^{1/2}$ (Data-driven)}
+    \end{center}
+    \vspace{-0.3em}
 
-    % 2. THE WHITENING FORMULA (Target)
+    % 2. THE WHITENING FORMULA
     \onslide<1->{
         \textbf{2. The Whitening Form (Eq. 10.44):}
         \begin{equation*}
-            \hat{f}(\vect{x}) = \frac{\alert<2>{|\hat{\mathbf{\Sigma}}|^{-1/2}}}{n h^p} \sum_{i=1}^{n} K \left( \alert<3>{\frac{\hat{\mathbf{\Sigma}}^{-1/2} (\vect{x} - \vect{X}_i)}{h}} \right)
+            \hat{f}(\vect{x}) = \frac{\alert<2>{|\hat{\mathbf{\Sigma}}|^{-1/2}}}{n h^p} \sum_{i=1}^{n} K \left( \alert<3>{\frac{\hat{\mathbf{\Sigma}}^{-1} (\vect{x} - \vect{X}_i)}{h}} \right)
         \end{equation*}
     }
 
-    % 3. ANALYSIS BOX (Appears at the bottom)
+    % 3. ANALYSIS BOXES
     \vspace{0.5em}
     \begin{columns}[t]
         \begin{column}{0.48\textwidth}
@@ -300,7 +309,7 @@
                 \begin{block}{\alert<2>{A. Volume Term}}
                     \centering \footnotesize
                     $|\mathbf{H}|$ becomes $|\hat{\mathbf{\Sigma}}|^{1/2}$. \\
-                    (Normalizes the volume change).
+                    (Normalizes volume change).
                 \end{block}
             }
         \end{column}
@@ -308,7 +317,7 @@
             \onslide<3->{
                 \begin{block}{\alert<3>{B. Distance Term}}
                     \centering \footnotesize
-                    Quadratic form becomes Mahalanobis: \\
+                    Becomes \textbf{Mahalanobis}: \\
                     $(\vect{x}-\vect{X}_i)^T \mathbf{\Sigma}^{-1} (\vect{x}-\vect{X}_i)$.
                 \end{block}
             }
@@ -324,8 +333,6 @@
         % --- LEFT: PROFILE (IMAGE BLENDS IN) ---
         \begin{column}{0.28\textwidth}
             \centering
-            % Mẹo: Dùng chiều rộng 100% cột để ảnh to nhất có thể
-            % LaTeX tự động lọc nền trong suốt của file .png
             \includegraphics[width=1.0\linewidth, keepaspectratio]{images/messi_transparent.png}
 
             \vspace{0.2em}
@@ -333,9 +340,9 @@
             \begin{itemize}
                 \setlength\itemsep{0em}
                 \raggedright
-                \item \textbf{Mean:} 5G, 10km.
-                \item \textbf{A:} 5G, \textbf{12km} (Easy).
-                \item \textbf{Messi:} \textbf{7G}, 10km (Hard).
+                \item \textbf{Mean:} 1G/A, 9km.
+                \item \textbf{A:} 1G/A, \textbf{11km} (Easy).
+                \item \textbf{Messi:} \textbf{3G/A}, 9km (Hard).
             \end{itemize}
         \end{column}
 
@@ -376,7 +383,7 @@
         \begin{column}{0.28\textwidth}
             \centering
             % PHOTO HERE: Replace 'photo_orange.jpg' with your file
-            \includegraphics[width=0.9\linewidth, height=2.5cm, keepaspectratio]{exs2}
+            \includegraphics[width=1.0\linewidth, height=3.0cm, keepaspectratio]{orange_singer}
 
             \vspace{0.5em}
             \textbf{Scenario: Idol Show}

@@ -1,48 +1,53 @@
 \section{Simplification by Product Kernel method}
 % --- SLIDE 3: PRODUCT KERNELS (ANIMATED) ---
+% --- SLIDE: PRODUCT KERNELS (OPTIMIZED) ---
 \begin{frame}{Practical Approach: Product Kernels}
-    % 1. CONCEPT: Start with the core assumption
-    To simplify the complexity, we assume \alert<2>{\textbf{independence}} between dimensions.
+    \small % 1. Thu nhỏ font toàn bộ slide để tiết kiệm không gian
+
+    % 1. CONCEPT
+    To simplify complexity, we assume \alert<2>{\textbf{independence}} between dimensions.
     \begin{itemize}
         \item This implies the Bandwidth Matrix $\vect{H}$ is \textbf{diagonal}.
     \end{itemize}
 
-    % 2. FORMULA: Highlight the 'Product' operator to show simplification
+    \vspace{-0.2em} % Kéo khối công thức lên một chút
+
+    % 2. FORMULA
     \begin{block}{The Product Estimator}
         \begin{equation}
             \hat{f}(\vect{x}) = \frac{1}{n} \sum_{i=1}^{n} \underbrace{\alert<3>{\prod_{j=1}^{p}} \frac{1}{\alert<4>{h_j}} K\left( \frac{x_j - X_{ij}}{\alert<4>{h_j}} \right)}_{\text{Product of univariate kernels}}
         \end{equation}
     \end{block}
 
-    \vspace{0.5em}
+    % \vspace{0.5em} -> Bỏ dòng này để tiết kiệm đất
 
     \begin{columns}[c]
-        % Left Column: Advantages (Sequential Disclosure)
-        \begin{column}{0.55\textwidth}
+        % Left Column: Tăng độ rộng lên 0.6 để chữ đỡ bị rớt dòng
+        \begin{column}{0.6\textwidth}
            \textbf{Key Advantages:}
            \begin{itemize}
-               \setlength\itemsep{0.6em}
+               \setlength\itemsep{0.3em} % Giảm khoảng cách giữa các mục
 
-               % CLICK 4: Parameter Reduction (The biggest win)
+               % CLICK 4
                \item<4-> \textbf{Parameter Reduction:}
-               \newline \footnotesize Reduces unknowns from \alert<4>{$O(p^2)$} (full matrix) to \alert<4>{$O(p)$} (vector).
+               % Bỏ \newline, để text chạy tự nhiên sẽ tiết kiệm dòng hơn
+               \footnotesize Reduces unknowns from \alert<4>{$O(p^2)$} (matrix) to \alert<4>{$O(p)$} (vector).
 
-               % CLICK 5: Efficiency
+               % CLICK 5
                \item<5-> \textbf{Computational Efficiency:}
-               \newline \footnotesize No expensive matrix inversion needed.
+               \footnotesize No expensive matrix inversion needed.
 
-               % CLICK 6: Flexibility
+               % CLICK 6
                \item<6-> \textbf{Flexibility:}
-               \newline \footnotesize Allows distinct bandwidth $h_j$ for each dimension.
+               \footnotesize Allows distinct bandwidth $h_j$ for each dimension.
            \end{itemize}
         \end{column}
 
-        % Right Column: Visual Consequence (Static or Revealed)
-        % We keep it visible to show the "Constraint" of this method
-        \begin{column}{0.45\textwidth}
+        % Right Column: Giảm độ rộng còn 0.4
+        \begin{column}{0.4\textwidth}
             \centering
-            % Use the specific image name you provided
-            \includegraphics[width=0.9\linewidth, height=4.5cm, keepaspectratio]{2D_Contour_Density_Surface}
+            % 2. Giảm chiều cao ảnh xuống 3.5cm (Con số an toàn)
+            \includegraphics[width=0.95\linewidth, height=3.5cm, keepaspectratio]{images/2D_Contour_Density_Surface}
             \vspace{-0.2em}
             \captionof{figure}{\scriptsize Consequence: \alert<2>{Axis-aligned} Contours}
         \end{column}
